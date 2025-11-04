@@ -1,12 +1,11 @@
 pipeline {
     agent any
 
-    // Define a helper function to run platform-appropriate commands
     stages {
-        stage('Setup Environment') {
+        stage('Setup Helper Function') {
             steps {
                 script {
-                    // Define a reusable helper function
+                    // Define helper that runs either bat or sh depending on OS
                     runCommand = { cmd ->
                         if (isUnix()) {
                             sh cmd
@@ -22,10 +21,9 @@ pipeline {
             steps {
                 script {
                     if (isUnix()) {
-                        // Linux / macOS
-                        runCommand('pip install --break-system-packages -r requirements.txt || pip install -r requirements.txt')
+                        // Try pip for both python and python3
+                        runCommand('python -m pip install -r requirements.txt || python3 -m pip install -r requirements.txt')
                     } else {
-                        // Windows
                         runCommand('pip install -r requirements.txt')
                     }
                 }
@@ -35,7 +33,11 @@ pipeline {
         stage('Fetch Data') {
             steps {
                 script {
-                    runCommand('python src/data_fetch.py')
+                    if (isUnix()) {
+                        runCommand('python src/data_fetch.py || python3 src/data_fetch.py')
+                    } else {
+                        runCommand('python src\\data_fetch.py')
+                    }
                 }
             }
         }
@@ -43,7 +45,11 @@ pipeline {
         stage('Clean Data') {
             steps {
                 script {
-                    runCommand('python src/data_clean.py')
+                    if (isUnix()) {
+                        runCommand('python src/data_clean.py || python3 src/data_clean.py')
+                    } else {
+                        runCommand('python src\\data_clean.py')
+                    }
                 }
             }
         }
@@ -51,7 +57,11 @@ pipeline {
         stage('Train Model') {
             steps {
                 script {
-                    runCommand('python src/model_train.py')
+                    if (isUnix()) {
+                        runCommand('python src/model_train.py || python3 src/model_train.py')
+                    } else {
+                        runCommand('python src\\model_train.py')
+                    }
                 }
             }
         }
@@ -59,7 +69,11 @@ pipeline {
         stage('Evaluate Model') {
             steps {
                 script {
-                    runCommand('python src/evaluate.py')
+                    if (isUnix()) {
+                        runCommand('python src/evaluate.py || python3 src/evaluate.py')
+                    } else {
+                        runCommand('python src\\evaluate.py')
+                    }
                 }
             }
         }
@@ -67,7 +81,11 @@ pipeline {
         stage('Generate Report') {
             steps {
                 script {
-                    runCommand('python src/report_generator.py')
+                    if (isUnix()) {
+                        runCommand('python src/report_generator.py || python3 src/report_generator.py')
+                    } else {
+                        runCommand('python src\\report_generator.py')
+                    }
                 }
             }
         }
@@ -83,7 +101,7 @@ pipeline {
 
     post {
         success {
-            echo '✅ Pipeline executed successfully on all platforms'
+            echo '✅ Pipeline executed successfully (cross-platform)'
         }
         failure {
             echo '❌ Pipeline failed'
