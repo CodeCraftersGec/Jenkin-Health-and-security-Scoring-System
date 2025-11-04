@@ -15,7 +15,7 @@ def clean_data():
     df = df[df['Close'] > 0]
 
     df.to_csv('data/cleaned_dogecoin_data.csv', index=False)
-    print("✅ Cleaned dataset saved to data/cleaned_dogecoin_data.csv")
+    print("Cleaned dataset saved to data/cleaned_dogecoin_data.csv")
 
 if __name__ == "__main__":
     clean_data()
