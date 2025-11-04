@@ -17,7 +17,7 @@ def generate_html_report():
     <body>
         <h1>Dogecoin Price Prediction Report</h1>
         <pre>{metrics}</pre>
-        <img src='../artifact/reports/doge_plot.png' width='600'>
+        <img src={plot_path} width='600'>
     </body>
     </html>
     """
