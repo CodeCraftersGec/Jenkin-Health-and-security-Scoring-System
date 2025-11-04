@@ -103,6 +103,19 @@ pipeline {
                 archiveArtifacts artifacts: 'reports/*.html, reports/*.png, reports/*.txt', fingerprint: true
             }
         }
+        stage('Publish HTML Report') {
+            steps {
+                publishHTML(target: [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'reports',
+                    reportFiles: 'final_report.html',
+                    reportName: 'Dogecoin Forecast Report'
+                ])
+            }
+        }
+
 
     }
 
