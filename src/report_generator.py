@@ -2,7 +2,7 @@ import base64, os
 
 def generate_html_report():
     metrics_path = 'reports/metrics.txt'
-    plot_path = '../artifact/eports/doge_plot.png'
+    plot_path = 'reports/doge_plot.png'
     output_html = 'reports/final_report.html'
 
     with open(metrics_path) as f:
@@ -17,7 +17,6 @@ def generate_html_report():
     <body>
         <h1>Dogecoin Price Prediction Report</h1>
         <pre>{metrics}</pre>
-        <img src={plot_path} width='600'>
     </body>
     </html>
     """
