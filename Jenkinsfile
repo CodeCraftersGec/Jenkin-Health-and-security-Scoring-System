@@ -98,6 +98,12 @@ pipeline {
                 echo 'Security Scan: Passed ✅'
             }
         }
+        stage('Archive Artifacts') {
+            steps {
+                archiveArtifacts artifacts: 'reports/*.html, reports/*.png, reports/*.txt', fingerprint: true
+            }
+        }
+
     }
 
     post {
