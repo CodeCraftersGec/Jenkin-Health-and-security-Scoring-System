@@ -110,7 +110,7 @@ pipeline {
                     alwaysLinkToLastBuild: true,
                     keepAll: true,
                     reportDir: 'reports',
-                    reportFiles: 'final_report.html',
+                    reportFiles: 'final_report.html, doge_plot.png',
                     reportName: 'Dogecoin Forecast Report'
                 ])
             }
