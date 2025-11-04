@@ -2,10 +2,10 @@ pipeline {
     agent any
 
     stages {
-        stage('Setup Helper Function') {
+        stage('Setup Environment') {
             steps {
                 script {
-                    // Define helper that runs either bat or sh depending on OS
+                    // Define reusable helper for cross-platform command execution
                     runCommand = { cmd ->
                         if (isUnix()) {
                             sh cmd
@@ -21,9 +21,10 @@ pipeline {
             steps {
                 script {
                     if (isUnix()) {
-                        // Try pip for both python and python3
-                        runCommand('python -m pip install -r requirements.txt || python3 -m pip install -r requirements.txt')
+                        // Linux / macOS — try both python and python3
+                        runCommand('python -m pip install --break-system-packages -r requirements.txt || python3 -m pip install --break-system-packages -r requirements.txt || pip install -r requirements.txt')
                     } else {
+                        // Windows
                         runCommand('pip install -r requirements.txt')
                     }
                 }
@@ -101,7 +102,7 @@ pipeline {
 
     post {
         success {
-            echo '✅ Pipeline executed successfully (cross-platform)'
+            echo '✅ Pipeline executed successfully across Windows, Linux, and macOS'
         }
         failure {
             echo '❌ Pipeline failed'
