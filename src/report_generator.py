@@ -1,4 +1,4 @@
-import os
+import base64, os
 
 def generate_html_report():
     metrics_path = 'reports/metrics.txt'
@@ -8,13 +8,16 @@ def generate_html_report():
     with open(metrics_path) as f:
         metrics = f.read()
 
+    with open(plot_path, "rb") as img_file:
+        encoded = base64.b64encode(img_file.read()).decode('utf-8')
+
     html = f"""
     <html>
     <head><title>Dogecoin Forecast Report</title></head>
     <body>
         <h1>Dogecoin Price Prediction Report</h1>
         <pre>{metrics}</pre>
-        <img src='{plot_path}' width='600'>
+        <img src="data:image/png;base64,{encoded}" width="600">
     </body>
     </html>
     """
@@ -23,6 +26,3 @@ def generate_html_report():
         f.write(html)
 
     print(f"HTML report generated at {output_html}")
-
-if __name__ == "__main__":
-    generate_html_report()
