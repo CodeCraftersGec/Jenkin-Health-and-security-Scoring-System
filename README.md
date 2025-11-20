@@ -346,7 +346,7 @@ And that `src` has an `__init__.py` (so it’s a Python package).
 
 ## 8. License
 
-You can add your own license here (MIT, Apache-2.0, etc.).
+MIT
 
 ---
 
